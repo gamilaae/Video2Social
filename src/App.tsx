@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI } from '@google/genai';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { 
@@ -367,8 +366,6 @@ export default function App() {
     setResult('');
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
       const h = translations['english'].headings;
       const systemInstruction = `You are an advanced AI assistant specialized in analyzing any video and converting it into high-quality, ready-to-publish social media content. Generate the content in ${language === 'english' ? 'English' : 'Arabic'}. IMPORTANT: Keep all section headings and the Snapshot labels (Topic, Tone, Platforms, Goal) in English. Only translate the actual content inside each section.
 
@@ -443,15 +440,21 @@ TONE:
         };
       }
 
-      const response = await ai.models.generateContentStream({
-        model: 'gemini-3.1-pro-preview',
-        contents,
-        config: { systemInstruction, temperature: 0.7 },
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ contents, systemInstruction }),
       });
 
-      for await (const chunk of response) {
-        setResult((prev) => prev + (chunk.text || ''));
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to generate content');
       }
+
+      const data = await response.json();
+      setResult(data.text || '');
     } catch (err: any) {
       console.error(err);
       if (err.message && (err.message.includes('429') || err.message.includes('quota') || err.message.includes('RESOURCE_EXHAUSTED'))) {
