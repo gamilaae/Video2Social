@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB limit for base64 inline
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB limit for Vercel Serverless Functions
 
 const translations = {
   english: {
@@ -19,7 +19,7 @@ const translations = {
     videoFileLabel: "Video File",
     videoUrlLabel: "Video URL",
     clickToUpload: "Click to upload",
-    fileSizeLimit: "MP4, MOV up to 20MB",
+    fileSizeLimit: "MP4, MOV up to 4MB",
     urlPlaceholder: "https://youtube.com/...",
     outputLanguageLabel: "Output Language",
     englishBtn: "English",
@@ -35,7 +35,7 @@ const translations = {
     snapshotTitle: "Content Snapshot",
     topicLabel: "Topic",
     goalLabel: "Goal",
-    errorFileSize: "File size exceeds 20MB limit. Please provide a smaller video or a URL.",
+    errorFileSize: "File size exceeds 4MB limit. Please provide a smaller video or a URL.",
     errorNoFile: "Please upload a video file.",
     errorNoUrl: "Please enter a video URL.",
     errorGeneric: "An error occurred while generating content.",

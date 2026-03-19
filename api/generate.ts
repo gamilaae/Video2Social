@@ -1,9 +1,13 @@
 import { GoogleGenAI } from '@google/genai';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-// Extend the maximum duration for Vercel (Hobby plan max is 10s or 60s depending on settings)
+// Vercel serverless function configuration
 export const config = {
-  maxDuration: 60, 
+  api: {
+    bodyParser: {
+      sizeLimit: '4mb',
+    },
+  },
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -21,7 +25,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Initialize the SDK using the environment variable
     const ai = new GoogleGenAI({ 
-      apiKey: process.env.VITE_GEMINI_API_KEY || process.env.GOOGLE_API_KEY 
+      apiKey: process.env.VITE_GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY 
     });
 
     const response = await ai.models.generateContent({
