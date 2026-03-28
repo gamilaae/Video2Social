@@ -16,18 +16,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // We accept 'contents' instead of just 'prompt' to support your existing video/image payload structure
     const { contents, systemInstruction } = req.body;
 
     if (!contents) {
       return res.status(400).json({ error: 'Missing contents in request body' });
     }
 
-    // Initialize the SDK using the environment variable
-    
-const ai = new GoogleGenAI({ 
-  apiKey: import.meta.env.GEMINI_API_KEY
-});    
+    // Use process.env for environment variables on Vercel
+    const ai = new GoogleGenAI({ 
+      apiKey: process.env.GEMINI_API_KEY
+    });
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.1-pro-preview',
@@ -38,9 +36,8 @@ const ai = new GoogleGenAI({
       }
     });
 
-    // Return the generated text
     return res.status(200).json({ text: response.text });
-    
+
   } catch (error: any) {
     console.error('Gemini API Error:', error);
     return res.status(500).json({ 
