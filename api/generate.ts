@@ -24,7 +24,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Use process.env for environment variables on Vercel
    const ai = new GoogleGenAI({ 
-  apiKey: process.env.GEMINI_API_KEY
+  apiKey: process.env.GEMINI_API_KEY!
 });
  
     const response = await ai.models.generateContent({
