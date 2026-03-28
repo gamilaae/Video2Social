@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Initialize the SDK using the environment variable
     
 const ai = new GoogleGenAI({ 
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY
+  apiKey: import.meta.env.GEMINI_API_KEY
 });    
 
     const response = await ai.models.generateContent({
