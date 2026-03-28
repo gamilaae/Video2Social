@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
    const ai = new GoogleGenAI({ 
   apiKey: process.env.GEMINI_API_KEY
 });
-
+ 
     const response = await ai.models.generateContent({
       model: 'gemini-3.1-pro-preview',
       contents: contents,
